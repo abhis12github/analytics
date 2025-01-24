@@ -130,11 +130,12 @@ export default function WebsitePage() {
             <div className="w-full items-center justify-center">
                 <Tabs defaultValue="general" className="w-full items-center justify-center flex flex-col">
                     <TabsList className="w-full bg-transparent mb-4 items-start justify-start flex ">
-                        <TabsTrigger value="general">Account</TabsTrigger>
+                        <TabsTrigger value="general">general</TabsTrigger>
                         <TabsTrigger value="custom Events">custom Events</TabsTrigger>
                     </TabsList>
                     <TabsContent value="general" className="w-full">
-                        <div className="w-full grid-cols-1 md:grid-cols-2 px-4 gap-6">
+                        <div className="w-full"></div>
+                        <div className="w-full grid grid-cols-1 md:grid-cols-2 px-4 gap-6">
                             <div className="bg-black border-white/5 border text-white text-center ">
                                 <p className="text-white/70 font-medium py-8 w-full text-center border-b border border-white/5">TOTAL VISITS</p>
                                 <p className="py-12 text-3xl lg:text-4xl font-bold bg-[#050505]">

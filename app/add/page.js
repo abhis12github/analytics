@@ -74,7 +74,7 @@ export default function AddPage() {
                         </p>
                     </span>
                     <button onClick={() => router.push(`/w/${website.trim()}`)} className="button">
-                        addded
+                        added
                     </button>
                 </div>}
             </div>

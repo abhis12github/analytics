@@ -7,9 +7,9 @@ import { supabase } from "@/config/supabaseConfig";
 import { redirect, usePathname } from "next/navigation";
 export default function Header() {
     const [user] = useUser();
-    const pathname=usePathname();
+    const pathname = usePathname();
 
-    const logOut=async()=>{
+    const logOut = async () => {
         await supabase.auth.signOut();
         redirect("/signin");
     }
@@ -38,29 +38,29 @@ export default function Header() {
                                 alt="name"
                             />}
                         </div>
-                        <DropdownMenuContent className="bg-[#0a0a0a] border-white/5 outline-none text-white bg-opacity-20 backdrop-blur-md filter ">
-                            <DropdownMenuLabel className="text-white">
-                                settings
-                            </DropdownMenuLabel>
-                            <DropdownMenuSeparator className="bg-white/5"></DropdownMenuSeparator>
-                            <Link href="/settings" prefetch>
-                                <DropdownMenuItem className="text-white/60 smooth cursor-pointer rounded-md">
-                                    API
-                                </DropdownMenuItem>
-                            </Link>
-                            <Link href="/settings" prefetch>
-                                <DropdownMenuItem className="text-white/60 smooth cursor-pointer rounded-md">
-                                    Guide
-                                </DropdownMenuItem>
-                            </Link>
-                            <DropdownMenuSeparator className="bg-white/5"></DropdownMenuSeparator>
-                           
-                            <DropdownMenuItem className="text-white/60 smooth cursor-pointer rounded-md" onClick={logOut}>
-                                log out
-                            </DropdownMenuItem>
-                          
-                        </DropdownMenuContent>
                     </DropdownMenuTrigger>
+                    <DropdownMenuContent className="bg-[#0a0a0a] border-white/5 outline-none text-white bg-opacity-20 backdrop-blur-md filter ">
+                        <DropdownMenuLabel className="text-white">
+                            settings
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator className="bg-white/5"></DropdownMenuSeparator>
+                        <Link href="/settings" prefetch>
+                            <DropdownMenuItem className="text-white/60 smooth cursor-pointer rounded-md">
+                                API
+                            </DropdownMenuItem>
+                        </Link>
+                        <Link href="/settings" prefetch>
+                            <DropdownMenuItem className="text-white/60 smooth cursor-pointer rounded-md">
+                                Guide
+                            </DropdownMenuItem>
+                        </Link>
+                        <DropdownMenuSeparator className="bg-white/5"></DropdownMenuSeparator>
+
+                        <DropdownMenuItem className="text-white/60 smooth cursor-pointer rounded-md" onClick={logOut}>
+                            log out
+                        </DropdownMenuItem>
+
+                    </DropdownMenuContent>
                 </DropdownMenu>
             </div>
         </div>
