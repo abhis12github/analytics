@@ -1,6 +1,7 @@
 "use client"
 
 import Header from "@/app/components/Header";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext } from "@/components/ui/carousel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/config/supabaseConfig";
 import useUser from "@/hooks/useUser";
@@ -12,8 +13,11 @@ export default function WebsitePage() {
     const { website } = useParams();
     const [loading, setLoading] = useState(false);
     const [pageViews, setPageViews] = useState([]);
+    const [customEvents, setCustomEvents] = useState([]);
     const [totalVisits, setTotalVisits] = useState([]);
     const [groupedPageViews, setGroupedPageViews] = useState([]);
+    const [groupedPageSources, setGroupedPageSources] = useState([]);
+    const [groupedCustomEvents, setGroupedCustomEvents] = useState([]);
 
     useEffect(() => {
         if (!user) return;
@@ -31,16 +35,25 @@ export default function WebsitePage() {
     const fetchViews = async () => {
         setLoading(true);
         try {
-            const [viewsResponse, visitsResponse] = await Promise.all([
+            const [viewsResponse, visitsResponse, customEventsResponse] = await Promise.all([
                 supabase.from("page_views").select().eq("domain", website),
-                supabase.from("visits").select().eq("website_id", website)
+                supabase.from("visits").select().eq("website_id", website),
+                supabase.from("events").select().eq("website_id", website)
             ]);
             const views = viewsResponse.data;
             const visits = visitsResponse.data;
+            const customEventsData = customEventsResponse.data;
 
             setPageViews(views);
             setGroupedPageViews(groupPageViews(views));
             setTotalVisits(visits);
+            setCustomEvents(customEventsData);
+            setGroupedCustomEvents(
+                customEventsData.reduce((acc, event) => {
+                    acc[event.event_name] = (acc[event.event_name] || 0) + 1;
+                    return acc;
+                }, {})
+            );
 
         } catch (error) {
             console.error(error);
@@ -131,7 +144,7 @@ export default function WebsitePage() {
                                         add ?utm={"{source}"} to track
                                     </p>
                                 </h1>
-                                {/* {groupedPageSources.map((pageSource) => (
+                                {groupedPageSources.map((pageSource) => (
                                     <div
                                         key={pageSource}
                                         className="text-white w-full items-center justify-between 
@@ -145,13 +158,89 @@ export default function WebsitePage() {
                                                 {abbreviateNumber(pageSource.visits)}
                                             </p>
                                         </p>
-                                    </div> 
-                                ))} */}
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
                     </TabsContent>
-                    <TabsContent value="custom Events">Change your password here.</TabsContent>
+                    <TabsContent value="custom Events" className="w-full">
+                        {groupedCustomEvents && (
+                            <Carousel className="w-full px-4">
+                                <CarouselContent>
+                                    {Object.entries(groupedCustomEvents).map(
+                                        ([eventName, count]) => (
+                                            <CarouselItem
+                                                key={`${eventName}-${count}`}
+                                                className="basis-1/2"
+                                            >
+                                                <div
+                                                    className={`bg-black smooth group hover:border-white/10
+                             text-white text-center border ${activeCustomEventTab == eventName
+                                                            ? "border-white/10"
+                                                            : "border-white/5 cursor-pointer"
+                                                        } `}
+                                                    onClick={() => setActiveCustomEventTab(eventName)}
+                                                >
+                                                    <p
+                                                        className={`text-white/70 font-medium py-8 w-full
+                                 group-hover:border-white/10
+                                smooth text-center border-b ${activeCustomEventTab == eventName
+                                                                ? "border-white/10"
+                                                                : "border-white/5 cursor-pointer"
+                                                            }`}
+                                                    >
+                                                        {eventName}
+                                                    </p>
+                                                    <p className="py-12 text-3xl lg:text-4xl font-bold bg-[#050505]">
+                                                        {count}
+                                                    </p>
+                                                </div>
+                                            </CarouselItem>
+                                        )
+                                    )}
+                                </CarouselContent>
+                                <CarouselPrevious />
+                                <CarouselNext />
+                            </Carousel>
+                        )}
+                        <div
+                            className="items-center justify-center bg-black mt-12
+                 w-full border-y border-white/5 relative"
+                        >
+                            {activeCustomEventTab !== "" && (
+                                <button
+                                    className="button absolute right-0 z-50"
+                                    onClick={() => setActiveCustomEventTab("")}
+                                >
+                                    all
+                                </button>
+                            )}
+                            <div className="flex flex-col bg-black z-40 h-full w-full">
+                                {customEvents
+                                    .filter((item) =>
+                                        activeCustomEventTab
+                                            ? item.event_name == activeCustomEventTab
+                                            : item
+                                    )
+                                    .map((event) => (
+                                        <div
+                                            key={event.id}
+                                            className={`text-white w-full items-start justify-start 
+                  px-6 py-12 border-b border-white/5 flex flex-col relative`}
+                                        >
+                                            <p className="text-white/70 font-light pb-3">
+                                                {event.event_name}
+                                            </p>
+                                            <p className="">{event.message}</p>
+                                            <p className="italic absolute right-2 bottom-2 text-xs text-white/50">
+                                                {formatTimeStampz(event.timestamp)}
+                                            </p>
+                                        </div>
+                                    ))}
+                            </div>
+                        </div>
+                    </TabsContent>
                 </Tabs>
 
             </div>
