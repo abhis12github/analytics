@@ -25,7 +25,7 @@ export async function POST(req){
         await supabase.from("visits").insert([{website_id:domain,source:source ?? "Direct"}]).select();
     }
 
-    if(event==="page_views"){
+    if(event==="pageview"){
         await supabase.from("page_views").insert([{domain,page:url}])
     }
     //as we need to return anything, so returned body

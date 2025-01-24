@@ -11,7 +11,7 @@
     var source=params.get("utm");
 
     function generateSessionId() {
-        return "session-" + Math.random.toString(36).substring(2, 9);
+        return "session-" + Math.random().toString(36).substring(2, 9);
     }
 
     function initializeSession() {
