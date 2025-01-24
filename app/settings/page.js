@@ -70,7 +70,7 @@ export default function SettingsPage() {
                 {apiKey && <div className="mt-12 border-white/5 bg-black space-y-12 py-12 w-full md:w-3/4 lg:w-1/2">
                     <div className="space-y-12 px-4">
                         <p>API key </p>
-                        <input disabled className="input-disabled" value={apiKey} readOnly type="text" />
+                        <input disabled className="input-disabled p-3" value={apiKey} readOnly type="text" />
                         <button className="button" onClick={copyApiKey}>Copy API Key</button>
                     </div>
                     <div className="space-y-4 border-t border-white/5 bg-black p-6">
