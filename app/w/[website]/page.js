@@ -1,7 +1,7 @@
 "use client"
 
 import Header from "@/app/components/Header";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/config/supabaseConfig";
 import useUser from "@/hooks/useUser";
@@ -18,6 +18,7 @@ export default function WebsitePage() {
     const [groupedPageViews, setGroupedPageViews] = useState([]);
     const [groupedPageSources, setGroupedPageSources] = useState([]);
     const [groupedCustomEvents, setGroupedCustomEvents] = useState([]);
+    const [activeCustomEventTab, setActiveCustomEventTab] = useState("");
 
     useEffect(() => {
         if (!user) return;
@@ -47,6 +48,7 @@ export default function WebsitePage() {
             setPageViews(views);
             setGroupedPageViews(groupPageViews(views));
             setTotalVisits(visits);
+            setGroupedPageSources(groupPageSources(visits));
             setCustomEvents(customEventsData);
             setGroupedCustomEvents(
                 customEventsData.reduce((acc, event) => {
@@ -76,6 +78,19 @@ export default function WebsitePage() {
         }));
     }
 
+    function groupPageSources(visits) {
+        const groupedPageSources = {};
+    
+        visits.forEach(({ source }) => {
+          groupedPageSources[source] = (groupedPageSources[source] || 0) + 1;
+        });
+    
+        return Object.keys(groupedPageSources).map((source) => ({
+          source: source,
+          visits: groupedPageSources[source],
+        }));
+      }
+
     const abbreviateNumber = (number) => {
         if (number >= 1000000) {
             return (number / 1000000).toFixed(1) + "M";
@@ -85,6 +100,13 @@ export default function WebsitePage() {
             return number.toString();
         }
     }
+
+    const formatTimeStampz = (date) => {
+        const timestamp = new Date(date);
+    
+        const formattedTimestamp = timestamp.toLocaleString();
+        return formattedTimestamp;
+    };
 
     if (loading) {
         <div className="bg-black text-white min-h-screen w-full items-start justify-start flex flex-col">
