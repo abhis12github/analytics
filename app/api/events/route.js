@@ -44,7 +44,7 @@ export async function POST(req) {
                             { headers: corsHeaders }
                         );
                     } else {
-                        return NextResponse.JSON(
+                        return NextResponse.json(
                             { message: "success" },
                             { status: 200 },
                             { headers: corsHeaders }
