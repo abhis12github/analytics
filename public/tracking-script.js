@@ -4,7 +4,7 @@
     var document = window.document
     var scriptElement = document.currentScript // script tag that points to this script
     var dataDomain = scriptElement.getAttribute("data-domain");
-    var endpoint = "http://localhost:3000/api/track";
+    var endpoint = "https://analytics-xi-five.vercel.app/api/track";
 
     let queryString=location.search;
     const params=new URLSearchParams(queryString);
