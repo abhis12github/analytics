@@ -145,11 +145,13 @@ function WebsitePage() {
   };
   useEffect(() => {
     if (!supabase || !website) return;
-    setInterval(() => {
+    const interval = setInterval(() => {
       setFilterValue(0);
       fetchViews();
-    }, 30000);
-  }, [website, supabase]);
+    }, 3000);
+  
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, [website,supabase]);
 
   if (loading) {
     return (
