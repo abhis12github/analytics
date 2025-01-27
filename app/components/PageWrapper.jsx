@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-function Wrapper({ children }) {
+function PageWrapper({ children }) {
   return (
     <div
       className="bg-black min-h-screen h-full w-full
@@ -16,4 +16,4 @@ function Wrapper({ children }) {
   );
 }
 
-export default Wrapper;
+export default PageWrapper;

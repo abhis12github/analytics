@@ -1,4 +1,5 @@
-"use client";
+"use client"
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useParams } from "next/navigation";
 import React from "react";
@@ -7,12 +8,12 @@ import { sunburst } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 function Snippet() {
   const { website } = useParams();
-  const JS_codeString = `<script defer data-domain="${website}" src="https://monitoryour.website/tracking-script.js"></script>`;
+  const JS_codeString = `<script defer data-domain="${website}" src="https://analytics-xi-five.vercel.app"></script>`;
   const NextJS_codeString = `
 <Script
 defer
 data-domain="${website}"
-src="https://monitoryour.website/tracking-script.js"/>
+src="https://analytics-xi-five.vercel.app"/>
    `;
   return (
     <Tabs defaultValue="Js/React" className="w-full space-y-5">

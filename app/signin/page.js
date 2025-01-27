@@ -4,32 +4,40 @@ import { supabase } from "@/config/supabaseConfig"
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export default function SignInPage(){
+export default function SignInPage() {
 
-    const router=useRouter();
-    const signIn=async()=>{
+    const router = useRouter();
+    const signIn = async () => {
         await supabase.auth.signInWithOAuth({
-            provider:"google"
+            provider: "google",
+            options: {
+                redirectTo:"https://analytics-xi-five.vercel.app/dashboard/"
+                // redirectTo: "http://localhost:3000/dashboard"
+            }
         });
     }
 
-    const catchUser=async()=>{
-        const {data:{user}}=await supabase.auth.getUser();
-        if(user){
-            if(user.role==='authenticated') router.push("/dashboard")
+    const catchUser = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            if (user.role === 'authenticated') router.push("/dashboard")
         }
     }
 
-    useEffect(()=>{
-        if(!supabase) return;
+    useEffect(() => {
+        if (!supabase) return;
         catchUser();
-    },[supabase]);
+    }, [supabase]);
 
     return (
-        <div className="bg-black items-center justify-center flex w-full min-h-screen">
+
+        <div className="bg-black items-center justify-center flex w-full min-h-screen z-500">
             <button className="button flex items-center justify-center space-x-5" onClick={signIn}>
                 signIn with Google
             </button>
         </div>
+
+
+
     )
 }

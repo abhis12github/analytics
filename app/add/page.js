@@ -55,7 +55,7 @@ export default function AddPage() {
     return (
         <div className="w-full min-h-screen bg-black flex flex-col items-center justify-center">
             <Logo size="lg" />
-            <div className="items-center justify-center flex flex-col w-full z-0 border-y border border-white/5 bg-black text-white ">
+            <div className="items-center justify-center flex flex-col w-full z-0 border-y border border-white/5 bg-black text-white p-4">
                 {step == 1 ? <div className="w-full items-center justify-center flex flex-col space-y-10">
                     <span className="w-full lg:w-[50%] group">
                         <p className="text-white/40 pb-4 group-hover:text-white smooth">Domain</p>
